@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+
+<generatorConfiguration>
+
+    <!-- 据连接驱动jar地址 -->
+    <classPathEntry location="/Users/kirra/Desktop/repo/mysql/mysql-connector-java/5.1.14/mysql-connector-java-5.1.14.jar"/>
+    <context id="testTables" targetRuntime="MyBatis3">
+        <!--定义数据库相关基本配置-->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://172.16.0.11:3306/sys?serverTimezone=UTC&amp;useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"
+                        userId="root"
+                        password="123456789">
+        </jdbcConnection>
+        <!--定义生成POJO对象配置-->
+        <javaModelGenerator targetPackage="pojo"
+                            targetProject="/Users/kirra/Desktop/project/KenhoMBGPlus/KenhoMBGPlus/coderoot">
+        </javaModelGenerator>
+        <!--定义生成mapper对象配置-->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="/Users/kirra/Desktop/project/KenhoMBGPlus/KenhoMBGPlus/coderoot">
+
+        </sqlMapGenerator>
+
+        <table tableName="sys_config" domainObjectName="SysConfig"/>
+
+    </context>
+
+</generatorConfiguration>
