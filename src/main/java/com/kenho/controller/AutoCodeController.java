@@ -1,14 +1,15 @@
 package com.kenho.controller;
 
+import com.kenho.object.TableRelateDetail;
 import org.mybatis.generator.api.ShellRunner;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class AutoCodeController {
+    @ResponseBody
     @RequestMapping(value = "/generate", method = RequestMethod.GET)
-    public void generate()
+    public void generate(TableRelateDetail tableRelateDetail)
     {
         String[] args=new String[3];
         args=new String[3];
@@ -16,5 +17,11 @@ public class AutoCodeController {
         args[1]="/Users/kirra/Desktop/project/KenhoMBGPlus/KenhoMBGPlus/src/main/resources/MysqlConfig.xml";
         args[2]="-overwrite";
         ShellRunner.main(args);
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.GET)
+    public String index()
+    {
+        return "index";
     }
 }

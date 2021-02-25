@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Title</title>
+</head>
+<body>
+<form action="/generate" method="get">
+    数据库类型：<select name="databaseType">
+    <option value="1">mysql</option>
+    </select>
+    <br/>
+    表名：<input type="text" id="tableName" name="tableName"/><br/>
+    数据库地址：<input type="text" id="databaseurl" name="databaseurl"/><br/>
+    用户名：<input type="text" id="username" name="username"/><br/>
+    密码：<input type="pwd" id="password" name="password"/><br/>
+    实体名：<input type="text" id="objectName" name="objectName"/><br/>
+    实体路径：<input type="text" id="objectPackage" name="objectPackage"/><br/>
+    服务路径：<input type="text" id="serverPackage" name="serverPackage"/><br/>
+    作者：<input type="text" id="author" name="author"/><br/>
+    <input type="submit" name="button" value="提交"/>
+</form>
+</body>
+</html>
