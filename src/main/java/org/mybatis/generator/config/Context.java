@@ -87,6 +87,14 @@ public class Context extends PropertyHolder {
 
     private XmlFormatter xmlFormatter;
 
+    public JDBCConnectionConfiguration getJdbcConnectionConfiguration() {
+        return jdbcConnectionConfiguration;
+    }
+
+    public ArrayList<TableConfiguration> getTableConfigurations() {
+        return tableConfigurations;
+    }
+
     public Context(ModelType defaultModelType) {
         super();
 

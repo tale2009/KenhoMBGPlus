@@ -1,6 +1,7 @@
 package com.kenho.controller;
 
 import com.kenho.object.TableRelateDetail;
+import com.kenho.util.ThreadLocalUtil;
 import org.mybatis.generator.api.ShellRunner;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ public class AutoCodeController {
     @RequestMapping(value = "/generate", method = RequestMethod.GET)
     public void generate(TableRelateDetail tableRelateDetail)
     {
+        ThreadLocalUtil.set("tableinfo",tableRelateDetail);
         String[] args=new String[3];
         args=new String[3];
         args[0]="-configfile";
