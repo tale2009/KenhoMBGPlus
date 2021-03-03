@@ -29,6 +29,7 @@
                     <include>**/*.dtd</include>
                     <include>**/*.yml</include>
                     <include>**/*.html</include>
+                    <include>**/*.ftl</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>
@@ -40,6 +41,7 @@
                     <include>**/*.yml</include>
                     <include>**/*.tld</include>
                     <include>**/*.dtd</include>
+                    <include>**/*.ftl</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>
@@ -80,6 +82,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
     </dependencies>
 </project>

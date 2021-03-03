@@ -20,12 +20,18 @@ import static org.mybatis.generator.internal.util.StringUtility.isTrue;
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+import com.kenho.object.ColumnObject;
+import com.kenho.object.TableRelateDetail;
+import com.kenho.util.CommonUtil;
+import com.kenho.util.FreeMarkerUtil;
+import com.kenho.util.ThreadLocalUtil;
+import freemarker.template.TemplateException;
 import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.ConnectionFactory;
 import org.mybatis.generator.api.GeneratedJavaFile;
@@ -456,31 +462,39 @@ public class Context extends PropertyHolder {
         }
 
         for (IntrospectedTable introspectedTable : introspectedTables) {
-            callback.checkCancel();
-
-            introspectedTable.initialize();
-            introspectedTable.calculateGenerators(warnings, callback);
-            generatedJavaFiles.addAll(introspectedTable
-                    .getGeneratedJavaFiles());
-            generatedXmlFiles.addAll(introspectedTable
-                    .getGeneratedXmlFiles());
-            generatedKotlinFiles.addAll(introspectedTable
-                    .getGeneratedKotlinFiles());
-
-            generatedJavaFiles.addAll(pluginAggregator
-                    .contextGenerateAdditionalJavaFiles(introspectedTable));
-            generatedXmlFiles.addAll(pluginAggregator
-                    .contextGenerateAdditionalXmlFiles(introspectedTable));
-            generatedKotlinFiles.addAll(pluginAggregator
-                    .contextGenerateAdditionalKotlinFiles(introspectedTable));
+            TableRelateDetail tableinfo = (TableRelateDetail) ThreadLocalUtil.get("tableinfo");
+            //封装FreeMark参数
+            Map<String,Object> freemarkMap=new HashMap();
+            String filepath=introspectedTable.getContext().getSqlMapGeneratorConfiguration().getTargetProject();
+            String serverFolder=tableinfo.getServerPackage().replace(".", File.separator);
+            String objectFolder=tableinfo.getObjectPackage().replace(".", File.separator);
+            //定义对象名称
+            freemarkMap.put("objectName",CommonUtil.upperCaseObjectName(tableinfo.getObjectName()));
+            freemarkMap.put("lowerObjectName",tableinfo.getObjectName().toLowerCase());
+            freemarkMap.put("upperObjectName",tableinfo.getObjectName().toUpperCase());
+            freemarkMap.put("author",tableinfo.getAuthor());
+            freemarkMap.put("serverPackage",tableinfo.getServerPackage());
+            freemarkMap.put("objectPackage",tableinfo.getObjectPackage());
+            freemarkMap.put("tableName",introspectedTable.getTableConfiguration().getTableName());
+            List<ColumnObject> columnList=new ArrayList<>();
+            CommonUtil.buildColumnList(columnList,introspectedTable.getPrimaryKeyColumns(),true);
+            CommonUtil.buildColumnList(columnList,introspectedTable.getNonPrimaryKeyColumns(),false);
+            freemarkMap.put("columnList",columnList);
+            try {
+                FreeMarkerUtil freeMarkerUtil=new FreeMarkerUtil();
+                freeMarkerUtil.generateFile("controller.ftl",freemarkMap,filepath+File.separator+serverFolder+File.separator+"controller",CommonUtil.upperCaseObjectName(tableinfo.getObjectName())+"Controller.java");
+                freeMarkerUtil.generateFile("service.ftl",freemarkMap,filepath+File.separator+serverFolder+File.separator+"service",CommonUtil.upperCaseObjectName(tableinfo.getObjectName())+"Service.java");
+                freeMarkerUtil.generateFile("serviceImpl.ftl",freemarkMap,filepath+File.separator+serverFolder+File.separator+"service"+File.separator+"impl",CommonUtil.upperCaseObjectName(tableinfo.getObjectName())+"ServiceImpl.java");
+                freeMarkerUtil.generateFile("mapper.ftl",freemarkMap,filepath+File.separator+serverFolder+File.separator+"mapper",CommonUtil.upperCaseObjectName(tableinfo.getObjectName())+"Mapper.java");
+                freeMarkerUtil.generateFile("po.ftl",freemarkMap,filepath+File.separator+objectFolder+File.separator+"po",CommonUtil.upperCaseObjectName(tableinfo.getObjectName())+"PO.java");
+                freeMarkerUtil.generateFile("vo.ftl",freemarkMap,filepath+File.separator+objectFolder+File.separator+"vo",CommonUtil.upperCaseObjectName(tableinfo.getObjectName())+"VO.java");
+                freeMarkerUtil.generateFile("xml.ftl",freemarkMap,filepath+File.separator+objectFolder,CommonUtil.upperCaseObjectName(tableinfo.getObjectName())+"Mapper.xml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TemplateException e) {
+                e.printStackTrace();
+            }
         }
-
-        generatedJavaFiles.addAll(pluginAggregator
-                .contextGenerateAdditionalJavaFiles());
-        generatedXmlFiles.addAll(pluginAggregator
-                .contextGenerateAdditionalXmlFiles());
-        generatedKotlinFiles.addAll(pluginAggregator
-                .contextGenerateAdditionalKotlinFiles());
     }
 
     private Connection getConnection() throws SQLException {
