@@ -4,9 +4,7 @@ import ${serverPackage}.vo.${objectName}VO;
 import java.util.List;
 
 /**
-*
-*
-*
+*${objectCNName}mapper
 *@author ${author}
 **/
 

@@ -1,5 +1,7 @@
 package com.kenho.object;
 
+
+
 public class TableRelateDetail {
     private int databaseType;
     private String tableName;
@@ -10,7 +12,7 @@ public class TableRelateDetail {
     private String author;
     private String username;
     private String password;
-
+    private String objectCNName;
     public int getDatabaseType() {
         return databaseType;
     }
@@ -81,5 +83,13 @@ public class TableRelateDetail {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getObjectCNName() {
+        return objectCNName;
+    }
+
+    public void setObjectCNName(String objectCNName) {
+        this.objectCNName = objectCNName;
     }
 }

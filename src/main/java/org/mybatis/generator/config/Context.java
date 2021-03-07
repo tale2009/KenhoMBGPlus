@@ -480,6 +480,7 @@ public class Context extends PropertyHolder {
             CommonUtil.buildColumnList(columnList,introspectedTable.getPrimaryKeyColumns(),true);
             CommonUtil.buildColumnList(columnList,introspectedTable.getNonPrimaryKeyColumns(),false);
             freemarkMap.put("columnList",columnList);
+            freemarkMap.put("objectCNName",tableinfo.getObjectCNName());
             try {
                 FreeMarkerUtil freeMarkerUtil=new FreeMarkerUtil();
                 freeMarkerUtil.generateFile("controller.ftl",freemarkMap,filepath+File.separator+serverFolder+File.separator+"controller",CommonUtil.upperCaseObjectName(tableinfo.getObjectName())+"Controller.java");
