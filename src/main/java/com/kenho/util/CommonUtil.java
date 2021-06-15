@@ -11,11 +11,23 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
+import java.util.Properties;
 
 public class CommonUtil {
     public static void rebuildJDBCConfig(TableRelateDetail tableRelateDetail, JDBCConnectionConfiguration jdbcConnectionConfiguration) throws ClassNotFoundException, SQLException {
-        jdbcConnectionConfiguration.setConnectionURL("jdbc:mysql://" + tableRelateDetail.getDatabaseurl() + "?characterEncoding=utf8&useSSL=false");
-        jdbcConnectionConfiguration.setDriverClass("com.mysql.jdbc.Driver");
+        if(tableRelateDetail.getDatabaseType()==1)
+        {
+            jdbcConnectionConfiguration.setConnectionURL("jdbc:mysql://" + tableRelateDetail.getDatabaseurl() + "?characterEncoding=utf8&useSSL=false");
+            jdbcConnectionConfiguration.setDriverClass("com.mysql.jdbc.Driver");
+        }
+        else
+        {
+            //暂时只支持使用jdbc:oracle:thin:@//<host>:<port>/<service_name>
+            jdbcConnectionConfiguration.setConnectionURL("jdbc:oracle:thin:@//"+tableRelateDetail.getDatabaseurl());
+            jdbcConnectionConfiguration.setDriverClass("oracle.jdbc.driver.OracleDriver");
+            //让oracle字段带上注释
+            jdbcConnectionConfiguration.addProperty("remarksReporting","true");
+        }
     }
 
     public static String upperCaseObjectName(String name)

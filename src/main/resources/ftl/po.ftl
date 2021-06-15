@@ -20,8 +20,8 @@ import java.util.Date;<#break>
 public class ${objectName}PO implements Serializable
 {
     <#list columnList as column>
-    @ApiModelProperty("${column.columnCNname}")
-    <#if column.nullable == false>@NotNull(message="${column.columnCNname}不能为空")</#if>
+    @ApiModelProperty("${column.columnCNname!}")
+    <#if column.nullable == false>@NotNull(message="${column.columnCNname!}不能为空")</#if>
     private <#if column.columnType == 1>String</#if><#if column.columnType == 2>Date</#if><#if column.columnType == 3>BigDecimal</#if><#if column.columnType == 4>Integer</#if><#if column.columnType == 5>Boolean</#if> ${column.columnname};
     </#list>
 

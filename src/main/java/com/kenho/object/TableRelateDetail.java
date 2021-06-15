@@ -1,8 +1,13 @@
 package com.kenho.object;
 
 
-
+/**
+ * 数据库连接类
+ */
 public class TableRelateDetail {
+    /**
+     * 1.mysql 2.oracle
+     */
     private int databaseType;
     private String tableName;
     private String databaseurl;

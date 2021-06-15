@@ -136,6 +136,8 @@ public class ShellRunner {
             return;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
         for (String warning : warnings) {

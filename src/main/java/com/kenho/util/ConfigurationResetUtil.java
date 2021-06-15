@@ -3,13 +3,14 @@ package com.kenho.util;
 import com.kenho.object.TableRelateDetail;
 import org.mybatis.generator.config.*;
 
+import java.sql.SQLException;
+
 public class ConfigurationResetUtil {
     /**
      * 改变项可以通过在工具类进行拓展
      * @param config
      */
-    public static void reset(Configuration config)
-    {
+    public static void reset(Configuration config) throws SQLException, ClassNotFoundException {
         TableRelateDetail tableinfo = (TableRelateDetail) ThreadLocalUtil.get("tableinfo");
         JDBCConnectionConfiguration jdbcConnectionConfiguration = config.getContexts().get(0).getJdbcConnectionConfiguration();
         /**
@@ -17,8 +18,7 @@ public class ConfigurationResetUtil {
          */
         jdbcConnectionConfiguration.setPassword(tableinfo.getPassword());
         jdbcConnectionConfiguration.setUserId(tableinfo.getUsername());
-        jdbcConnectionConfiguration.setConnectionURL("jdbc:mysql://" + tableinfo.getDatabaseurl() + "?characterEncoding=utf8&useSSL=false");
-        jdbcConnectionConfiguration.setDriverClass("com.mysql.cj.jdbc.Driver");
+        CommonUtil.rebuildJDBCConfig(tableinfo,jdbcConnectionConfiguration);
         /**
          * 重新设置服务包名
          */
